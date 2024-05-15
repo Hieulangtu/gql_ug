@@ -84,6 +84,15 @@ class UserGQLModel(BaseGQLModel):
         resolver=DBResolvers.UserModel.memberships(MembershipGQLModel, WhereFilterModel=MembershipInputWhereFilter)
     )
 
+    membership = strawberry.field(
+        description="""List of mmeberships associated with the user""",
+        deprecation_reason="use memberships",
+        permission_classes=[
+            OnlyForAuthentized
+        ],
+        resolver=DBResolvers.UserModel.memberships(MembershipGQLModel, WhereFilterModel=MembershipInputWhereFilter)
+    )
+
     roles = strawberry.field(
         description="""User's roles (like Dean)""",
         permission_classes=[
@@ -162,6 +171,8 @@ class UserInputWhereFilter:
     valid: bool
     from .membershipGQLModel import MembershipInputWhereFilter
     memberships: MembershipInputWhereFilter
+    from .roleGQLModel import RoleInputWhereFilter
+    roles: RoleInputWhereFilter
 
 # from ._GraphResolvers import createRootResolver_by_page, asPage
 
